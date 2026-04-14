@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保養品特惠訂購單</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF6F1;
+    --warm-white: #FDF9F5;
+    --gold: #B8935A;
+    --gold-light: #D4AF80;
+    --dark: #2C2420;
+    --mid: #6B5A52;
+    --soft: #C8B8AE;
+    --accent: #8B4A3C;
+    --table-line: #E0D5CC;
+    --highlight: #FFF3EA;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Noto Serif TC', serif;
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 40px 0 30px;
+    border-bottom: 1px solid var(--gold);
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .header::before, .header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 16px;
+  }
+  .header::after { margin: 16px auto 0; }
+
+  .header-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .header-title {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+  .header-subtitle {
+    font-size: 13px;
+    color: var(--mid);
+    letter-spacing: 0.08em;
+  }
+
+  .discount-badge {
+    display: inline-block;
+    margin-top: 14px;
+    background: var(--accent);
+    color: white;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    padding: 5px 18px;
+    border-radius: 2px;
+  }
+
+  /* Section title */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 10px;
+  }
+  .section-title span {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .section-title::before, .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--table-line);
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 6px;
+    font-size: 13.5px;
+  }
+
+  thead tr {
+    border-bottom: 1.5px solid var(--gold);
+  }
+
+  th {
+    padding: 10px 12px;
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    font-weight: 400;
+    text-align: center;
+  }
+  th:first-child { text-align: left; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--table-line);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: var(--highlight); }
+
+  td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    text-align: center;
+    color: var(--dark);
+  }
+  td:first-child { text-align: left; }
+
+  .product-name {
+    font-size: 13.5px;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+  .product-exp {
+    font-size: 10.5px;
+    color: var(--mid);
+    margin-top: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  .price-original {
+    color: var(--mid);
+    text-decoration: line-through;
+    font-size: 12px;
+  }
+  .price-sale {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 2px;
+  }
+
+  .qty-input {
+    width: 58px;
+    border: 1px solid var(--soft);
+    border-radius: 3px;
+    padding: 5px 8px;
+    text-align: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--warm-white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .qty-input:focus { border-color: var(--gold); }
+
+  .subtotal {
+    font-size: 13px;
+    color: var(--dark);
+    min-width: 70px;
+  }
+
+  /* Summary */
+  .summary-row {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 12px 8px;
+    border-top: 1.5px solid var(--gold);
+    margin-top: 4px;
+  }
+  .summary-label {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--mid);
+  }
+  .summary-total {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    min-width: 100px;
+    text-align: right;
+  }
+
+  /* Note field */
+  .notes-section {
+    margin-top: 28px;
+    border: 1px solid var(--table-line);
+    padding: 16px 18px;
+    border-radius: 3px;
+    background: var(--warm-white);
+  }
+  .notes-label {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .notes-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--dark);
+    resize: none;
+    outline: none;
+    line-height: 1.8;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--table-line);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--soft);
+    letter-spacing: 0.15em;
+  }
+
+  .vol-tag {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--mid);
+    background: #F0EAE4;
+    padding: 1px 7px;
+    border-radius: 2px;
+    margin-left: 4px;
+  }
+
+  /* Name field */
+  .name-section {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0 4px;
+    padding: 14px 18px;
+    background: var(--warm-white);
+    border: 1px solid var(--table-line);
+    border-radius: 3px;
+  }
+  .name-label {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .name-input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid var(--soft);
+    background: transparent;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    color: var(--dark);
+    padding: 4px 0;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .name-input:focus { border-bottom-color: var(--gold); }
+
+  /* Submit button */
+  .submit-section {
+    margin-top: 24px;
+    text-align: center;
+  }
+  .submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 14px 48px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    letter-spacing: 0.18em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .submit-btn:hover { background: #7a3e33; }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { background: var(--soft); cursor: not-allowed; }
+
+  .submit-msg {
+    margin-top: 14px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    min-height: 20px;
+  }
+  .submit-msg.success { color: #5a8a5a; }
+  .submit-msg.error { color: var(--accent); }
+
+  @media print {
+    body { padding: 10px; }
+    .qty-input { border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="header-en">Skincare Exclusive Order Form</div>
+    <div class="header-title">保養品特惠訂購單</div>
+    <div class="header-subtitle">原價 × 4折優惠</div>
+    <div class="discount-badge">限時 4 折優惠</div>
+  </div>
+
+  <!-- 姓名 -->
+  <div class="name-section">
+    <span class="name-label">訂　購　人</span>
+    <input class="name-input" id="buyerName" type="text" placeholder="請填寫您的姓名…">
+  </div>
+
+  <!-- 活膚抗老 -->
+  <div class="section-title"><span>活膚抗老</span></div>
+  <table id="t1">
+    <thead>
+      <tr>
+        <th>品項</th>
+        <th>容量</th>
+        <th>原價</th>
+        <th>優惠價</th>
+        <th>件數</th>
+        <th>小計</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="product-name">微脂囊抗皺緊緻精華</div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$2,850</div></td>
+        <td><div class="price-sale">$1,140</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">Q10精華液<div class="product-exp">效期 2027/07/14</div></div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$2,850</div></td>
+        <td><div class="price-sale">$1,140</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">納米高效A脂精華<div class="product-exp">效期 2027/04/14</div></div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$2,280</div></td>
+        <td><div class="price-sale">$912</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 晶透美白 -->
+  <div class="section-title"><span>晶透美白</span></div>
+  <table id="t2">
+    <thead>
+      <tr>
+        <th>品項</th>
+        <th>容量</th>
+        <th>原價</th>
+        <th>優惠價</th>
+        <th>件數</th>
+        <th>小計</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="product-name">微脂囊杜鵑花酸精華液</div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$1,900</div></td>
+        <td><div class="price-sale">$760</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">微脂囊傳奇淨白精華液<div class="product-exp">效期 2027/08/02</div></div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$2,280</div></td>
+        <td><div class="price-sale">$912</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">微脂囊傳奇舒妍精華液<div class="product-exp">效期 2027/05/26</div></div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$2,550</div></td>
+        <td><div class="price-sale">$1,020</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">微脂囊左C</div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$1,840</div></td>
+        <td><div class="price-sale">$736</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 保濕舒敏 -->
+  <div class="section-title"><span>保濕舒敏</span></div>
+  <table id="t3">
+    <thead>
+      <tr>
+        <th>品項</th>
+        <th>容量</th>
+        <th>原價</th>
+        <th>優惠價</th>
+        <th>件數</th>
+        <th>小計</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="product-name">微脂囊高效前驅玻尿酸精華<div class="product-exp">效期 2027/05/26</div></div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$3,900</div></td>
+        <td><div class="price-sale">$1,560</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">B5</div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$1,890</div></td>
+        <td><div class="price-sale">$756</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">修護舒緩精華液<div class="product-exp">效期 2026/10/01</div></div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$1,850</div></td>
+        <td><div class="price-sale">$740</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">杏子油<div class="product-exp">效期 2027/02/04</div></div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$1,600</div></td>
+        <td><div class="price-sale">$640</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">金光菊萃取液</div></td>
+        <td>20ml</td>
+        <td><div class="price-original">$1,680</div></td>
+        <td><div class="price-sale">$672</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 特殊護理 -->
+  <div class="section-title"><span>特殊護理</span></div>
+  <table id="t4">
+    <thead>
+      <tr>
+        <th>品項</th>
+        <th>容量</th>
+        <th>原價</th>
+        <th>優惠價</th>
+        <th>件數</th>
+        <th>小計</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="product-name">逆齡展活眼霜</div></td>
+        <td>15ml</td>
+        <td><div class="price-original">$2,150</div></td>
+        <td><div class="price-sale">$860</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">DMS 緊緻護眼凝霜</div></td>
+        <td>30ml</td>
+        <td><div class="price-original">$2,480</div></td>
+        <td><div class="price-sale">$992</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">DMS 去角質修復乳<div class="product-exp">效期 2026/07/02</div></div></td>
+        <td>50ml</td>
+        <td><div class="price-original">$2,280</div></td>
+        <td><div class="price-sale">$912</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 基礎保養 -->
+  <div class="section-title"><span>基礎保養</span></div>
+  <table id="t5">
+    <thead>
+      <tr>
+        <th>品項</th>
+        <th>容量</th>
+        <th>原價</th>
+        <th>優惠價</th>
+        <th>件數</th>
+        <th>小計</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="product-name">基礎護理基礎乳（清爽）</div></td>
+        <td>50ml</td>
+        <td><div class="price-original">$1,680</div></td>
+        <td><div class="price-sale">$672</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">基礎護理基礎乳（水潤）<div class="product-exp">效期 2027/05/31</div></div></td>
+        <td>30ml</td>
+        <td><div class="price-original">$1,100</div></td>
+        <td><div class="price-sale">$440</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">DMS 深層潔膚露</div></td>
+        <td>150ml</td>
+        <td><div class="price-original">$1,600</div></td>
+        <td><div class="price-sale">$640</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">DMS 卸妝乳</div></td>
+        <td>150ml</td>
+        <td><div class="price-original">$1,880</div></td>
+        <td><div class="price-sale">$752</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">DMS 防曬隔離霜SPF15<div class="product-exp">效期 2026/10/22</div></div></td>
+        <td>50ml</td>
+        <td><div class="price-original">$1,800</div></td>
+        <td><div class="price-sale">$720</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">DMS 平衡化妝水</div></td>
+        <td>150ml</td>
+        <td><div class="price-original">$1,850</div></td>
+        <td><div class="price-sale">$740</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+      <tr>
+        <td><div class="product-name">DMS 神經醯胺護手霜</div></td>
+        <td>15ml</td>
+        <td><div class="price-original">$450</div></td>
+        <td><div class="price-sale">$180</div></td>
+        <td><input class="qty-input" type="number" min="0" value="0" onchange="calcTotal()"></td>
+        <td class="subtotal">$0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Total -->
+  <div class="summary-row">
+    <span class="summary-label">合計件數：</span>
+    <span class="summary-total" id="totalQty" style="font-size:16px;color:var(--mid);">0 件</span>
+    <span class="summary-label" style="margin-left:24px;">訂購總金額：</span>
+    <span class="summary-total" id="grandTotal">$0</span>
+  </div>
+
+  <!-- Notes -->
+  <div class="notes-section">
+    <div class="notes-label">備　　　註</div>
+    <textarea class="notes-input" id="orderNotes" rows="3" placeholder="請填寫備注事項（如配送地址、特殊需求等）…"></textarea>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-section">
+    <button class="submit-btn" id="submitBtn" onclick="submitOrder()">確認送出訂單</button>
+    <div class="submit-msg" id="submitMsg"></div>
+  </div>
+
+  <div class="footer">— 感謝您的訂購，我們將盡快與您確認 —</div>
+</div>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBYQYU7LCQJnpxRmfPUBXMzz48W6iKo3Ne51gmlAQFx8yDjvM-WwIRIfwVo3No2grm/exec';
+
+  function calcTotal() {
+    let grandTotal = 0;
+    let grandQty = 0;
+    document.querySelectorAll('table').forEach(table => {
+      table.querySelectorAll('tbody tr').forEach(row => {
+        const salePriceEl = row.querySelector('.price-sale');
+        const qtyInput = row.querySelector('.qty-input');
+        const subtotalEl = row.querySelector('.subtotal');
+        if (!salePriceEl || !qtyInput || !subtotalEl) return;
+        const salePrice = parseInt(salePriceEl.textContent.replace(/[^0-9]/g, '')) || 0;
+        const qty = parseInt(qtyInput.value) || 0;
+        const sub = salePrice * qty;
+        subtotalEl.textContent = sub > 0 ? '$' + sub.toLocaleString() : '$0';
+        subtotalEl.style.color = sub > 0 ? 'var(--accent)' : 'var(--dark)';
+        grandTotal += sub;
+        grandQty += qty;
+      });
+    });
+    document.getElementById('grandTotal').textContent = '$' + grandTotal.toLocaleString();
+    document.getElementById('totalQty').textContent = grandQty + ' 件';
+  }
+
+  function submitOrder() {
+    const name = document.getElementById('buyerName').value.trim();
+    if (!name) {
+      document.getElementById('submitMsg').textContent = '⚠️ 請先填寫訂購人姓名';
+      document.getElementById('submitMsg').className = 'submit-msg error';
+      document.getElementById('buyerName').focus();
+      return;
+    }
+
+    const items = [];
+    document.querySelectorAll('table').forEach(table => {
+      // Get section name from preceding .section-title
+      let section = '';
+      let el = table.previousElementSibling;
+      while (el) {
+        if (el.classList.contains('section-title')) { section = el.querySelector('span').textContent; break; }
+        el = el.previousElementSibling;
+      }
+      table.querySelectorAll('tbody tr').forEach(row => {
+        const nameEl = row.querySelector('.product-name');
+        const volEl = row.querySelector('td:nth-child(2)');
+        const salePriceEl = row.querySelector('.price-sale');
+        const qtyInput = row.querySelector('.qty-input');
+        if (!qtyInput) return;
+        const qty = parseInt(qtyInput.value) || 0;
+        if (qty <= 0) return;
+        const salePrice = parseInt(salePriceEl.textContent.replace(/[^0-9]/g, '')) || 0;
+        items.push({
+          product: section + '－' + nameEl.firstChild.textContent.trim(),
+          volume: volEl.textContent.trim(),
+          salePrice: salePrice,
+          qty: qty,
+          subtotal: salePrice * qty
+        });
+      });
+    });
+
+    if (items.length === 0) {
+      document.getElementById('submitMsg').textContent = '⚠️ 尚未選購任何商品';
+      document.getElementById('submitMsg').className = 'submit-msg error';
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('submitMsg');
+    btn.disabled = true;
+    btn.textContent = '送出中…';
+    msg.textContent = '';
+    msg.className = 'submit-msg';
+
+    const payload = {
+      timestamp: new Date().toLocaleString('zh-TW', {timeZone:'Asia/Taipei'}),
+      name: name,
+      notes: document.getElementById('orderNotes').value.trim(),
+      items: items
+    };
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      msg.textContent = '✓ 訂單已成功送出！感謝您的訂購。';
+      msg.className = 'submit-msg success';
+      btn.textContent = '已送出';
+    }).catch(() => {
+      msg.textContent = '❌ 送出失敗，請確認網路後再試。';
+      msg.className = 'submit-msg error';
+      btn.disabled = false;
+      btn.textContent = '確認送出訂單';
+    });
+  }
+</script>
+</body>
+</html>
